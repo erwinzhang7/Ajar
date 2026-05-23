@@ -13,19 +13,35 @@ Because Ajar plugs into the system Quick Look API, it works **everywhere Quick L
 
 ## Install
 
-> Pre-built downloads and a Homebrew Cask are on the roadmap once Ajar has a signed and notarized release. Until then, building from source is the supported path — Xcode handles ad-hoc signing automatically, so no Apple Developer account is required.
-
-### From source
+### Homebrew (recommended)
 
 ```sh
-brew install xcodegen     # one-time, if you don't have it
-git clone https://github.com/erwinzhang7/Ajar.git
-cd Ajar
-./scripts/bootstrap.sh    # generates Ajar.xcodeproj
-open Ajar.xcodeproj
+brew install --cask erwinzhang7/ajar/ajar
 ```
 
-Build and run the **Ajar** scheme. The first run is just a small window with instructions — the actual feature lives in the Quick Look extension that ships inside the app bundle.
+That installs the latest ad-hoc-signed build from the [`erwinzhang7/homebrew-ajar`](https://github.com/erwinzhang7/homebrew-ajar) tap. `brew upgrade --cask ajar` picks up new releases when they ship.
+
+### Direct download
+
+Grab `Ajar-<version>.zip` from the [Releases page](https://github.com/erwinzhang7/Ajar/releases), unzip, drag `Ajar.app` into `/Applications`. If macOS blocks first launch with "cannot be verified", clear the quarantine flag once:
+
+```sh
+xattr -cr /Applications/Ajar.app
+```
+
+(Homebrew Cask handles this step automatically, which is why it's the recommended path.)
+
+### Build from source
+
+For contributors or anyone who'd rather build locally — see [CONTRIBUTING.md](./CONTRIBUTING.md) for the full walkthrough. Short version:
+
+```sh
+brew install xcodegen
+git clone https://github.com/erwinzhang7/Ajar.git
+cd Ajar
+./scripts/bootstrap.sh
+open Ajar.xcodeproj
+```
 
 ### Enable the extension
 
