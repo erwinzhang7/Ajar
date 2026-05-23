@@ -1,0 +1,42 @@
+## Xcode
+build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+!default.xcworkspace
+xcuserdata/
+*.xcuserstate
+*.moved-aside
+*.pbxuser
+!default.pbxuser
+*.perspectivev3
+!default.perspectivev3
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.pins
+Package.resolved
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+## CI / scratch
+*.log
+.env
+
+## Tooling
+.claude/
