@@ -13,6 +13,8 @@ Because Ajar plugs into the system Quick Look API, it works **everywhere Quick L
 
 ## Install
 
+> Pre-built downloads and a Homebrew Cask are on the roadmap once Ajar has a signed and notarized release. Until then, building from source is the supported path — Xcode handles ad-hoc signing automatically, so no Apple Developer account is required.
+
 ### From source
 
 ```sh
@@ -60,4 +62,4 @@ Two targets — a minimal host app and a Quick Look Preview Extension (`.appex`)
 
 ## Contributing
 
-Issues and PRs welcome once the first archive milestone lands. For now, treat the project as a work-in-progress scaffold.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for build setup, project layout, and a list of good first issues. The project is early — small focused PRs are the easiest to land.
