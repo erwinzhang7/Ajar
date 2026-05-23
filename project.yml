@@ -42,6 +42,7 @@ targets:
         INFOPLIST_KEY_CFBundleDisplayName: Ajar
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
         INFOPLIST_KEY_NSHumanReadableCopyright: "© 2026 Erwin Zhang. MIT-licensed."
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_ENTITLEMENTS: Ajar/Ajar.entitlements
         COMBINE_HIDPI_IMAGES: YES
     dependencies:
