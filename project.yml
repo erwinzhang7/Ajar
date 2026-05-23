@@ -9,6 +9,12 @@ options:
   developmentLanguage: en
   groupSortPosition: top
   xcodeVersion: "26.0"
+  # Xcode 26 treats Icon Composer's .icon packages as a single file.
+  # Without this, xcodegen walks the package contents and Xcode loses
+  # its icon recognition. See: yonaskolb/XcodeGen#1556.
+  fileTypes:
+    "icon":
+      file: true
 
 settings:
   base:

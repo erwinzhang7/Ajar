@@ -58,6 +58,20 @@ If you're not sure whether something fits, open an issue first and we can sort s
 - Don't add files that aren't load-bearing — no boilerplate, no scaffolding for hypothetical future targets.
 - Match the existing comment style: only explain *why*, never *what*.
 
+## Icon
+
+The app icon currently lives in `Ajar/Assets.xcassets/AppIcon.appiconset/` as a 10-size `.appiconset` rendered from `assets/icon-source-light-1024.png`. This works on all macOS versions but doesn't respond to **macOS 26's per-icon Light/Dark setting** in System Settings → Appearance.
+
+To get appearance-adaptive icons, ship an `AppIcon.icon` package built with Xcode's Icon Composer:
+
+1. In Xcode: **File → New → File from Template → Icon Composer Document**. Save as `Ajar/Assets.xcassets/AppIcon.icon`.
+2. In Icon Composer, set the **default (light)** group's foreground to `assets/icon-source-light-1024.png`.
+3. Add a **dark** appearance group; set its foreground to `assets/icon-source-dark-1024.png`. (Optionally add tinted/clear if you want full Liquid Glass coverage.)
+4. Save. `project.yml` already has `fileTypes.icon.file: true`, so xcodegen will treat the package as a single file and Xcode will recognize it.
+5. Set `ASSETCATALOG_COMPILER_APPICON_NAME` in `project.yml` to `AppIcon` (already set). When both `AppIcon.icon` and `AppIcon.appiconset` are present, Tahoe prefers the `.icon`; older macOS versions fall back to the `.appiconset`.
+
+The `.icon` package format has no CLI tool and an undocumented schema; Icon Composer is the only supported way to produce it. The whole job is ~5 minutes once you have the source PNGs.
+
 ## Releases (maintainer notes)
 
 Ajar ships as an ad-hoc-signed `.app` distributed via GitHub Releases and a Homebrew Cask tap. No Apple Developer Program subscription is involved.
@@ -70,8 +84,29 @@ To cut a release:
    git tag v0.2.0
    git push origin v0.2.0
    ```
-3. The `release` workflow picks up the tag, runs `scripts/package.sh` (Release build, ad-hoc signed, zipped with `ditto`), and creates a GitHub Release with the zip attached and a ready-to-paste Homebrew Cask formula in the notes.
-4. Open [`erwinzhang7/homebrew-ajar`](https://github.com/erwinzhang7/homebrew-ajar), update `Casks/ajar.rb` with the new `version` and `sha256` from the release notes, push. Users can now `brew install --cask erwinzhang7/ajar/ajar` to get the new build.
+3. The `release` workflow:
+   - Runs `scripts/package.sh` (Release build, ad-hoc signed, zipped with `ditto`).
+   - Creates a GitHub Release with the zip attached and a paste-ready Cask formula in the notes (in case auto-bump is disabled).
+   - **Auto-bumps the Homebrew tap** (if `HOMEBREW_TAP_TOKEN` is configured) by cloning `erwinzhang7/homebrew-ajar`, replacing `version` + `sha256` in `Casks/ajar.rb`, and pushing the commit.
+4. Users then get the new build with `brew upgrade --cask ajar`. No manual tap edit needed.
+
+### One-time setup: `HOMEBREW_TAP_TOKEN`
+
+The auto-bump step needs to push to a separate repo (`homebrew-ajar`), which the default `GITHUB_TOKEN` can't do. Create a fine-grained PAT:
+
+1. https://github.com/settings/personal-access-tokens/new
+2. **Resource owner:** your user (`erwinzhang7`)
+3. **Repository access:** Only select repositories → pick **`homebrew-ajar`**
+4. **Repository permissions:**
+   - `Contents`: **Read and write**
+   - (Leave everything else as default / no access)
+5. **Expiration:** whatever you're comfortable with. Re-rotate when it expires.
+6. Generate, copy the token.
+7. In the Ajar repo → Settings → Secrets and variables → Actions → **New repository secret**:
+   - Name: `HOMEBREW_TAP_TOKEN`
+   - Value: paste the token.
+
+After that, every tag push handles itself end-to-end. Without the secret, the workflow logs a notice and you bump the tap by hand as before — nothing breaks.
 
 You can also build a release zip locally to test:
 
