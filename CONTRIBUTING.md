@@ -58,6 +58,28 @@ If you're not sure whether something fits, open an issue first and we can sort s
 - Don't add files that aren't load-bearing — no boilerplate, no scaffolding for hypothetical future targets.
 - Match the existing comment style: only explain *why*, never *what*.
 
+## Releases (maintainer notes)
+
+Ajar ships as an ad-hoc-signed `.app` distributed via GitHub Releases and a Homebrew Cask tap. No Apple Developer Program subscription is involved.
+
+To cut a release:
+
+1. Bump `MARKETING_VERSION` in `project.yml` (e.g. `"0.1.0"` → `"0.2.0"`), regenerate (`./scripts/bootstrap.sh`), commit.
+2. Tag and push:
+   ```sh
+   git tag v0.2.0
+   git push origin v0.2.0
+   ```
+3. The `release` workflow picks up the tag, runs `scripts/package.sh` (Release build, ad-hoc signed, zipped with `ditto`), and creates a GitHub Release with the zip attached and a ready-to-paste Homebrew Cask formula in the notes.
+4. Open [`erwinzhang7/homebrew-ajar`](https://github.com/erwinzhang7/homebrew-ajar), update `Casks/ajar.rb` with the new `version` and `sha256` from the release notes, push. Users can now `brew install --cask erwinzhang7/ajar/ajar` to get the new build.
+
+You can also build a release zip locally to test:
+
+```sh
+./scripts/package.sh
+# build/Ajar-<version>.zip plus its sha256 are printed at the end
+```
+
 ## License
 
 By contributing, you agree your contributions are licensed under the [MIT License](./LICENSE).
