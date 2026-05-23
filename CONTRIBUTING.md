@@ -64,7 +64,7 @@ The app icon currently lives in `Ajar/Assets.xcassets/AppIcon.appiconset/` as a 
 
 To get appearance-adaptive icons, ship an `AppIcon.icon` package built with Xcode's Icon Composer:
 
-1. In Xcode: **File → New → File from Template → Icon Composer Document**. Save as `Ajar/Assets.xcassets/AppIcon.icon`.
+1. Launch Icon Composer: **Xcode menu → Open Developer Tool → Icon Composer** (it's a standalone app bundled inside Xcode, not a New File template). Or from Terminal: `open "/Applications/Xcode.app/Contents/Applications/Icon Composer.app"`. In the welcome window choose **New Document**, then save it as `Ajar/Assets.xcassets/AppIcon.icon`.
 2. In Icon Composer, set the **default (light)** group's foreground to `assets/icon-source-light-1024.png`.
 3. Add a **dark** appearance group; set its foreground to `assets/icon-source-dark-1024.png`. (Optionally add tinted/clear if you want full Liquid Glass coverage.)
 4. Save. `project.yml` already has `fileTypes.icon.file: true`, so xcodegen will treat the package as a single file and Xcode will recognize it.
