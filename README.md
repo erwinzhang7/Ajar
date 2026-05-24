@@ -16,20 +16,21 @@ Because Ajar plugs into the system Quick Look API, it works **everywhere Quick L
 ### Homebrew (recommended)
 
 ```sh
-brew install --cask --no-quarantine erwinzhang7/ajar/ajar
+brew install --cask erwinzhang7/ajar/ajar
 ```
 
-The `--no-quarantine` flag matters: Ajar is ad-hoc signed (no Apple Developer Program subscription), so macOS Gatekeeper will refuse to launch it on first try if the quarantine attribute is set. The flag tells Homebrew to skip setting that attribute — you're effectively trusting a binary from Homebrew instead of one Apple notarized for $99/year. Upgrades stay easy: `brew upgrade --cask ajar`.
+Then upgrades are `brew upgrade --cask ajar` as usual.
 
-If you already installed *without* the flag and hit "Apple could not verify Ajar":
+**First launch needs one unblock step**, because Ajar is ad-hoc signed (no Apple Developer Program subscription, so the binary isn't Apple-notarized and Gatekeeper will refuse to open it the first time). Two ways past it:
 
-```sh
-sudo xattr -cr /Applications/Ajar.app && open -a Ajar
-```
+- **In Finder:** open `/Applications`, right-click **Ajar** → **Open** → click **Open** in the security dialog. After this one time, double-click / Spotlight / `open -a Ajar` all work normally.
+- **In Terminal:** `sudo xattr -cr /Applications/Ajar.app && open -a Ajar`
+
+Homebrew [removed the `--no-quarantine` install flag](https://github.com/Homebrew/brew/issues/20755) with no replacement, and Apple's Gatekeeper only auto-trusts notarized binaries — so this one-time step is unavoidable for any unsigned/ad-hoc macOS app distributed without paying Apple $99/yr.
 
 ### Direct download
 
-Grab `Ajar-<version>.zip` from the [Releases page](https://github.com/erwinzhang7/Ajar/releases), unzip, drag `Ajar.app` into `/Applications`, then run the `xattr` command above to clear the quarantine flag your browser added on download.
+Grab `Ajar-<version>.zip` from the [Releases page](https://github.com/erwinzhang7/Ajar/releases), unzip, drag `Ajar.app` into `/Applications`. Same first-launch step as above (right-click → Open, or `sudo xattr -cr /Applications/Ajar.app`).
 
 ### Build from source
 
