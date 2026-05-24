@@ -19,18 +19,25 @@ Because Ajar plugs into the system Quick Look API, it works **everywhere Quick L
 brew install --cask erwinzhang7/ajar/ajar
 ```
 
-Then upgrades are `brew upgrade --cask ajar` as usual.
+Upgrades are `brew upgrade --cask ajar` as usual.
 
-**First launch needs one unblock step**, because Ajar is ad-hoc signed (no Apple Developer Program subscription, so the binary isn't Apple-notarized and Gatekeeper will refuse to open it the first time). Two ways past it:
+#### First-launch unblock (one time per install)
 
-- **In Finder:** open `/Applications`, right-click **Ajar** → **Open** → click **Open** in the security dialog. After this one time, double-click / Spotlight / `open -a Ajar` all work normally.
-- **In Terminal:** `sudo xattr -cr /Applications/Ajar.app && open -a Ajar`
+Ajar is ad-hoc signed — no Apple Developer Program subscription, no notarization. On macOS Sequoia and Tahoe, Gatekeeper blocks first launch with *"Apple could not verify Ajar"*. The unblock:
 
-Homebrew [removed the `--no-quarantine` install flag](https://github.com/Homebrew/brew/issues/20755) with no replacement, and Apple's Gatekeeper only auto-trusts notarized binaries — so this one-time step is unavoidable for any unsigned/ad-hoc macOS app distributed without paying Apple $99/yr.
+1. Try to launch Ajar — Spotlight → type **Ajar** → Return, or double-click in Finder. Gatekeeper rejects with a dialog. Click **Done** (NOT *Move to Trash*).
+2. Open **System Settings → Privacy & Security**.
+3. Scroll down to the **Security** section.
+4. Click **Open Anyway** next to the *"Ajar" was blocked* notice.
+5. Confirm with your password.
+
+After that Ajar launches normally — the trust is permanent for that bundle. (Re-installing or upgrading via brew re-triggers the unblock.)
+
+> Tahoe removed every CLI shortcut that used to handle this — [`--no-quarantine`](https://github.com/Homebrew/brew/issues/20755), `spctl --add`, right-click → Open, and even `sudo xattr -cr` (App Management TCC now protects `/Applications`). The System Settings flow above is the only path for unsigned apps. Until Ajar is [notarized](https://developer.apple.com/documentation/security/notarizing-macos-software-before-distribution) ($99/yr Apple Developer Program), this single GUI confirmation is unavoidable — same model as installing any other unsigned Mac app from a maintainer you trust.
 
 ### Direct download
 
-Grab `Ajar-<version>.zip` from the [Releases page](https://github.com/erwinzhang7/Ajar/releases), unzip, drag `Ajar.app` into `/Applications`. Same first-launch step as above (right-click → Open, or `sudo xattr -cr /Applications/Ajar.app`).
+Grab `Ajar-<version>.zip` from the [Releases page](https://github.com/erwinzhang7/Ajar/releases), unzip, drag `Ajar.app` into `/Applications`. Same first-launch unblock applies (System Settings → Privacy & Security → Open Anyway).
 
 ### Build from source
 
